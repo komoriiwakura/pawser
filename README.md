@@ -22,7 +22,7 @@ pip install -e .
 
 ## Example
 
-```bash
+```python
 from pawser import parsePawml, printTree, pawml2domtree
 
 # Parse and print the PAWML file
