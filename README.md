@@ -5,14 +5,14 @@ It allows you to read, parse, and traverse `.pawml` files as a tree of nodes.
 
 ## Installation
 
-##Install via pip through PyPI
+**Install via pip through PyPI**
 
 ```bash
 pip install pawser
 ```
 This is the most common method, however if you do not have pip and/or would like to download this without or for other reasons, you can;
 
-##Clone the repository and install locally:
+**Clone the repository and install locally:**
 
 ```bash
 git clone https://github.com/komoriiwakura/pawser
