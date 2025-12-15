@@ -20,3 +20,16 @@ cd pawser
 pip install -e .
 ```
 
+## Example
+
+```bash
+from pawser import parsePawml, printTree, pawml2domtree
+
+# Parse and print the PAWML file
+tree = parsePawml("example.pawml")
+printTree(tree)
+
+# Get the DOM tree for programmatic use
+dom = pawml2domtree("example.pawml")
+```
+
