@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="pawser",                      # Your project name on PyPI
-    version="0.1.2",                    # Current version
+    version="0.2.0",                    # Current version
     packages=find_packages(),            # Automatically find packages
     python_requires=">=3.10",
     author="komoriiwakura",
