@@ -16,7 +16,6 @@ def parsePawml(filePath):
     with open(filePath, "r", encoding="utf-8") as f:
         lines = [line.rstrip("\n") for line in f]
 
-    # First line must be #pawml
     for line in lines:
         if line.strip():
             firstLine = line.strip()
@@ -26,7 +25,6 @@ def parsePawml(filePath):
     if firstLine != "#pawml":
         raise ValueError("Error: File must start with #pawml")
 
-    # Last line must be #pawml
     for line in reversed(lines):
         if line.strip():
             lastLine = line.strip()
@@ -38,7 +36,7 @@ def parsePawml(filePath):
 
     root = PawserNode("pawml")
     stack = [(root, -1)]
-    allowedTags = ["h1", "h2", "h3", "li", "it", "plt", "ol", "p"]
+    allowedTags = ["h1", "h2", "h3", "li", "it", "ol", "p"]
 
     for lineNo, line in enumerate(lines[1:-1], start=2):
         if not line.strip():
@@ -50,7 +48,7 @@ def parsePawml(filePath):
             line = line[1:]
 
         if line == "#pawml":
-            break  # middle block, ignore
+            break
 
         if line.startswith("#mdata"):
             try:
@@ -60,9 +58,9 @@ def parsePawml(filePath):
                 key = parts[0].strip()
                 value = parts[1].strip().strip('"')
                 if not value:
-                    raise ValueError(f"Error: mdata {key} missing value on line {lineNo}")
+                    raise ValueError
                 node = PawserNode("mdata")
-                node.children.append(PawserNode(key, attrs={}))
+                node.children.append(PawserNode(key))
                 node.children[-1].children.append(PawserTextNode(value))
             except:
                 raise ValueError(f"Error: Invalid mdata on line {lineNo}: '{line}'")
@@ -76,16 +74,7 @@ def parsePawml(filePath):
 
             node = PawserNode(tag)
 
-            if tag == "plt" and rest:
-                restParts = rest.split(" ", 1)
-                linkPart = restParts[0]
-                if linkPart.startswith("link="):
-                    node.attrs["link"] = linkPart[5:].strip('"')
-                    if len(restParts) > 1:
-                        node.children.append(PawserTextNode(restParts[1]))
-                else:
-                    node.children.append(PawserTextNode(rest))
-            elif rest:
+            if rest:
                 node.children.append(PawserTextNode(rest))
         else:
             node = PawserTextNode(line)
@@ -107,25 +96,17 @@ def printTree(node, indent=0):
     if node.type == "text":
         print(space + f'"{node.content}"')
         return
+
     attrs = f" {node.attrs}" if node.attrs else ""
     print(space + node.type + attrs)
+
     for child in node.children:
         printTree(child, indent + 1)
 
 
 def pawml2domtree(filePath):
-    """
-    Parse a PawML file and return its DOM tree.
-
-    Args:
-        filePath (str): Path to the .pawml file
-
-    Returns:
-        PawserNode: The root node of the parsed DOM tree
-    """
     try:
-        tree = parsePawml(filePath)
-        return tree  # return the DOM tree instead of printing
+        return parsePawml(filePath)
     except Exception as e:
         print(e)
         return None
